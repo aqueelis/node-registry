@@ -60,14 +60,14 @@ jobs:
         
         - name: Update task definition with new image
           id: task-def
-          uses: aws-actions/amazon-ecs-render-task-definition@v1
+          uses: aws-actions/amazon-ecs-render-task-definition@v2
           with:
             task-definition: current-task-def.json
             container-name: ${{ env.CONTAINER_NAME }}
             image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
         
         - name: Deploy to ECS
-          uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+          uses: aws-actions/amazon-ecs-deploy-task-definition@v2
           with:
             task-definition: ${{ steps.task-def.outputs.task-definition }}
             service: ${{ env.ECS_SERVICE }}
