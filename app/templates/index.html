@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DevOps ECS Demo</title>
+</head>
+<body>
+    <h1>Containerized Application</h1>
+
+    <p><strong>Hostname:</strong> <span id="hostname"></span></p>
+    <p><strong>Node:</strong> <span id="node"></span></p>
+    <p><strong>Version:</strong> <span id="version"></span></p>
+
+    <hr>
+
+    <h3>Simulated Scaling</h3>
+    <button onclick="addNode()">Add Node</button>
+    <button onclick="removeNode()">Remove Node</button>
+
+    <script>
+        let simulatedNodes = 1;
+
+        function loadInfo() {
+            fetch("/api/info")
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("hostname").innerText = data.hostname;
+                    document.getElementById("node").innerText = data.node;
+                    document.getElementById("version").innerText = data.version;
+                });
+        }
+
+        function addNode() {
+            simulatedNodes++;
+            console.log("Simulated nodes: " + simulatedNodes);
+        }
+
+        function removeNode() {
+            if (simulatedNodes > 1) simulatedNodes--;
+            console.log("Simulated nodes: " + simulatedNodes);
+        }
+        loadInfo();
+
+    </script>
+</body>
+</html>
