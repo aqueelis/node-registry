@@ -10,10 +10,10 @@ jobs:
         runs-on: ubuntu-latest
         
         env:
-          AWS_REGION: us-east-1
-          ECR_REPOSITORY: my-ecr-repo
-          ECS_CLUSTER: my-ecs-cluster
-          ECS_SERVICE: my-ecs-service
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ vars.ECS_SERVICE }}
           IMAGE_TAG: ${{ github.sha }}
           APP_VERSION: v1.0.${{ github.run_number }}
 
