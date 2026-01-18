@@ -42,6 +42,7 @@ jobs:
           run: |
             cd app
             docker build -t ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} --build-arg APP_VERSION=${{ env.APP_VERSION }} .
+            docker tag ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
         
         - name: Push Docker image to ECR
           run: |
