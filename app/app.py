@@ -36,7 +36,7 @@ def index():
 def info():
     #node_id, hostname = get_node_id()
     return jsonify({
-        "node": socket.gethostname(),
+        "node": get_node_id(),
         "version": APP_VERSION,
         "hostname": socket.gethostname()
     })
