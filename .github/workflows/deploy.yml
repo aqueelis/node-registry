@@ -58,7 +58,7 @@ jobs:
           run: |
             TASK_DEF=$(aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query 'taskDefinition')
             NEW_TASK_DEF=$(echo $TASK_DEF | jq --arg IMAGE "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}" '
-            .containerDefinitions[0].image = $IMAGE | with_entries(select(.value != null))'
+            .containerDefinitions[0].image = $IMAGE | with_entries(select(.value != null))')
             echo $NEW_TASK_DEF > new-task-def.json
             aws ecs register-task-definition --cli-input-json file://new-task-def.json
             aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
