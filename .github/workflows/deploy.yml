@@ -40,6 +40,7 @@ jobs:
         
         - name: Build Docker image
           run: |
+            cd app
             docker build -t ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} --build-arg APP_VERSION=${{ env.APP_VERSION }} .
         
         - name: Push Docker image to ECR
