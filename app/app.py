@@ -25,7 +25,7 @@ def get_node_id():
         return f"Node-{short_id}"
     except Exception as e:
         return "Node-Unknown"
-    
+
 
 @app.route("/")
 def index():
@@ -34,16 +34,18 @@ def index():
 
 @app.route("/api/info")
 def info():
-    #node_id, hostname = get_node_id()
+    # node_id, hostname = get_node_id()
     return jsonify({
         "node": get_node_id(),
         "version": APP_VERSION,
         "hostname": socket.gethostname()
     })
 
+
 @app.route("/health")
 def health():
     return "OK", 200
+
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
