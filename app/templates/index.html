@@ -1,45 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DevOps ECS Demo</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        main {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .info p {
+            margin: 0.5rem 0;
+        }
+
+        hr {
+            margin: 1.5rem 0;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Containerized Application</h1>
+    <main>
+        <header>
+            <h1>Containerized Application</h1>
+        </header>
 
-    <p><strong>Hostname:</strong> <span id="hostname"></span></p>
-    <p><strong>Node:</strong> <span id="node"></span></p>
-    <p><strong>Version:</strong> <span id="version"></span></p>
+        <section class="info">
+            <p><strong>Hostname:</strong> <span id="hostname">Loading...</span></p>
+            <p><strong>Node:</strong> <span id="node">Loading...</span></p>
+            <p><strong>Version:</strong> <span id="version">Loading...</span></p>
+        </section>
 
-    <hr>
-
-    <h3>Simulated Scaling</h3>
-    <button onclick="addNode()">Add Node</button>
-    <button onclick="removeNode()">Remove Node</button>
+        <hr />
+    </main>
 
     <script>
-        let simulatedNodes = 1;
+        const hostnameEl = document.getElementById("hostname");
+        const nodeEl = document.getElementById("node");
+        const versionEl = document.getElementById("version");
 
-        function loadInfo() {
-            fetch("/api/info")
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById("hostname").innerText = data.hostname;
-                    document.getElementById("node").innerText = data.node;
-                    document.getElementById("version").innerText = data.version;
-                });
-        }
+        const loadInfo = async () => {
+            try {
+                const response = await fetch("/api/info");
+                const data = await response.json();
 
-        function addNode() {
-            simulatedNodes++;
-            console.log("Simulated nodes: " + simulatedNodes);
-        }
+                hostnameEl.textContent = data.hostname;
+                nodeEl.textContent = data.node;
+                versionEl.textContent = data.version;
+            } catch (error) {
+                console.error("Failed to load app info:", error);
+            }
+        };
 
-        function removeNode() {
-            if (simulatedNodes > 1) simulatedNodes--;
-            console.log("Simulated nodes: " + simulatedNodes);
-        }
         loadInfo();
-
     </script>
 </body>
 </html>
