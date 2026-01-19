@@ -6,7 +6,7 @@ import hashlib
 
 app = Flask(__name__)
 
-APP_VERSION = os.getenv("APP_VERSION", "v1.0")
+APP_VERSION = os.getenv("APP_VERSION")
 ECS_METADATA_URL = os.getenv("ECS_CONTAINER_METADATA_URI_V4")
 
 def get_node_id():

@@ -49,12 +49,13 @@ jobs:
             cd app
             docker build -t ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} --build-arg APP_VERSION=${{ env.APP_VERSION }} .
             docker tag ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            docker tag ${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
         
         - name: Push Docker image to ECR
           run: |
             docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
 
-        - name: Download currnent task definition
+        - name: Download current task definition
           run: |
             aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query 'taskDefinition' > current-task-def.json
         
@@ -64,7 +65,9 @@ jobs:
           with:
             task-definition: current-task-def.json
             container-name: ${{ env.CONTAINER_NAME }}
-            image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}:latest
+            environment-variables: |
+              APP_VERSION=${{ env.APP_VERSION }}
         
         - name: Deploy to ECS
           uses: aws-actions/amazon-ecs-deploy-task-definition@v2
